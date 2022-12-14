@@ -19,7 +19,7 @@ Install:
 composer require onix-systems-php/hyperf-app-settings
 ```
 
-Run your database migrations:
+Publish database migrations:
 ```shell script
 php bin/hyperf.php vendor:publish onix-systems-php/hyperf-app-settings
 ```
