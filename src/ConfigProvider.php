@@ -27,6 +27,14 @@ class ConfigProvider
                     ],
                 ],
             ],
+            'publish' => [
+                [
+                    'id' => 'migration',
+                    'description' => 'The addition for migration from onix-systems-php/hyperf-app-settings.',
+                    'source' => __DIR__ . '/../publish/migrations',
+                    'destination' => BASE_PATH . '/migrations',
+                ],
+            ],
         ];
     }
 }

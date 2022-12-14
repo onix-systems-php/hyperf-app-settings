@@ -1,20 +1,13 @@
 # Hyperf-app-settings component
 
 Includes the following classes:
-
-- Exception:
-  - BusinessException.
-- Event:
-  - Action. 
+ 
 - Constants:
   - AppSettings;
-  - ErrorCode;
-  - Time.
 - DTO:
   - UpdateAppSettingDTO.
 - Model:
   - AppSetting;
-  - User.
 - Repository:
   - AppSettingsRepository.
 - Service:
@@ -24,4 +17,9 @@ Includes the following classes:
 Install:
 ```shell script
 composer require onix-systems-php/hyperf-app-settings
+```
+
+Run your database migrations:
+```shell script
+php bin/hyperf.php vendor:publish onix-systems-php/hyperf-app-settings
 ```

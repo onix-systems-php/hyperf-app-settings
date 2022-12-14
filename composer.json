@@ -20,27 +20,14 @@
     "require": {
         "php": ">=8.0",
         "ext-json": "*",
-        "96qbhy/hyperf-auth": "^2.6",
-        "fakerphp/faker": "^1.20",
         "onix-systems-php/hyperf-core": "^1.0",
-        "hyperf-ext/mail": "^2.2",
-        "hyperf/command": "^2.2|^3.0",
-        "hyperf/config": "~2.2.0|^3.0",
-        "hyperf/contract": "^2.2|^3.0",
-        "hyperf/cache": "~2.2.0|^3.0",
-        "hyperf/context": "^2.0.0|^3.0",
+        "onix-systems-php/hyperf-actions-log": "^1.0",
         "hyperf/database": "^2.2|^3.0",
+        "hyperf/cache": "~2.2.0|^3.0",
+        "nesbot/carbon": "^2.0|^3.0",
+        "hyperf/constants": "~2.2.0",
         "hyperf/db-connection": "^2.2|^3.0",
-        "hyperf/di": "^2.2|^3.0",
-        "hyperf/framework": "^2.2|^3.0",
-        "hyperf/filesystem": "^2.2|^3.0",
-        "hyperf/http-server": "^2.2|^3.0",
-        "hyperf/resource": "^2.2|^3.0",
-        "hyperf/session": "^2.2|^3.0",
-        "hyperf/testing": "^2.2|^3.0",
         "hyperf/validation": "^2.2|^3.0",
-        "hyperf/utils": "^2.2|^3.0",
-        "intervention/image": "^2.7",
         "yzen.dev/plain-to-class": "^1.0"
     },
     "require-dev": {
@@ -61,7 +48,7 @@
     },
     "scripts": {
         "test": "phpunit -c phpunit.xml --colors=always",
-        "analyse": "phpstan analyse --memory-limit 1024M -l 0 ./src",
+        "analyse": "phpstan analyse --memory-limit 300M -l 0 ./src",
         "cs-fix": "php-cs-fixer fix $1"
     },
     "extra": {
