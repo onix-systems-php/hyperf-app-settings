@@ -31,8 +31,14 @@ class ConfigProvider
                 [
                     'id' => 'migration',
                     'description' => 'The addition for migration from onix-systems-php/hyperf-app-settings.',
-                    'source' => __DIR__ . '/../publish/migrations',
-                    'destination' => BASE_PATH . '/migrations',
+                    'source' => __DIR__ . '/../publish/migrations/2022_04_18_122005_create_app_settings_table.php',
+                    'destination' => BASE_PATH . '/migrations/2022_04_18_122005_create_app_settings_table.php',
+                ],
+                [
+                    'id' => 'migration',
+                    'description' => 'The addition for migration from onix-systems-php/hyperf-app-settings.',
+                    'source' => __DIR__ . '/../publish/migrations/2022_05_10_111104_add_category_field_to_app_settings_table.php',
+                    'destination' => BASE_PATH . '/migrations/2022_05_10_111104_add_category_field_to_app_settings_table.php',
                 ],
             ],
         ];
