@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfAppSettings\Repository;
 
-use OnixSystemsPHP\HyperfAppSettings\Constants\AppSettings;
-use OnixSystemsPHP\HyperfAppSettings\Constants\Time;
-use OnixSystemsPHP\HyperfAppSettings\Model\AppSetting;
 use Hyperf\Cache\Annotation\Cacheable;
-use OnixSystemsPHP\HyperfCore\Repository\AbstractRepository;
+use Hyperf\Contract\ConfigInterface;
 use Hyperf\Database\Model\Builder;
+use Hyperf\Utils\ApplicationContext;
+use OnixSystemsPHP\HyperfAppSettings\Model\AppSetting;
+use OnixSystemsPHP\HyperfCore\Constants\Time;
+use OnixSystemsPHP\HyperfCore\Repository\AbstractRepository;
 
 /**
  * @method AppSetting create(array $data)
@@ -22,13 +23,16 @@ class AppSettingsRepository extends AbstractRepository
     #[Cacheable(prefix: 'app:setting_list', ttl: Time::YEAR)]
     public function getSettingsList(): array
     {
+        /** @var ConfigInterface $config */
+        $config = ApplicationContext::getContainer()->get(ConfigInterface::class);
+        $settingsList = $config->get('app_settings.fields');
         $settings = [];
         foreach (AppSetting::all()->all() as $setting) {
             $settings[$setting->name] = $setting;
         }
-        foreach (AppSettings::SETTINGS_LIST as $setting) {
-            if (!isset($settings[$setting])) {
-                $settings[$setting] = new AppSetting(AppSettings::SETTINGS_DATA[$setting]);
+        foreach ($settingsList as $name => $data) {
+            if (!isset($settings[$name])) {
+                $settings[$name] = (new AppSetting())->fill($data);
             }
         }
         return $settings;

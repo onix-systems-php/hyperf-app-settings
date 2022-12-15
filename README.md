@@ -2,8 +2,6 @@
 
 Includes the following classes:
  
-- Constants:
-  - AppSettings;
 - DTO:
   - UpdateAppSettingDTO.
 - Model:
@@ -19,7 +17,9 @@ Install:
 composer require onix-systems-php/hyperf-app-settings
 ```
 
-Publish database migrations:
+Publish config and database migrations:
 ```shell script
 php bin/hyperf.php vendor:publish onix-systems-php/hyperf-app-settings
 ```
+
+Fill `app_settings` config with fields you want to store in database and validation rules for them, following existing examples.  

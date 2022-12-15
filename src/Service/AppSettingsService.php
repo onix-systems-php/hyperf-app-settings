@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfAppSettings\Service;
 
-use OnixSystemsPHP\HyperfAppSettings\Constants\AppSettings;
-use OnixSystemsPHP\HyperfAppSettings\Constants\Time;
-use OnixSystemsPHP\HyperfAppSettings\Exception\BusinessException;
-use OnixSystemsPHP\HyperfAppSettings\Repository\AppSettingsRepository;
 use Hyperf\Cache\Annotation\CacheEvict;
+use Hyperf\Contract\ConfigInterface;
+use OnixSystemsPHP\HyperfAppSettings\Repository\AppSettingsRepository;
+use OnixSystemsPHP\HyperfCore\Constants\Time;
+use OnixSystemsPHP\HyperfCore\Exception\BusinessException;
 use OnixSystemsPHP\HyperfCore\Service\Service;
 
 #[Service]
@@ -16,6 +16,7 @@ class AppSettingsService
     private array $appSettings;
 
     public function __construct(
+        private ConfigInterface $config,
         private AppSettingsRepository $rAppSettings,
     ) {
         $this->reload();
@@ -29,14 +30,14 @@ class AppSettingsService
 
     public function get(string $setting)
     {
-        if (in_array($setting, AppSettings::SETTINGS_LIST)) {
-            if (!isset($this->appSettings[$setting])) {
-                $this->reload();
-            }
-            return $this->appSettings[$setting]->value;
-        } else {
-            throw new BusinessException(404, __('get_app_settings.wrong_type'));
+        $settingsList = $this->config->get('app_settings.fields');
+        if (!array_key_exists($setting, $settingsList)) {
+            throw new BusinessException(404, __('exceptions.app_settings.get_wrong_type'));
         }
+        if (!isset($this->appSettings[$setting])) {
+            $this->reload();
+        }
+        return $this->appSettings[$setting]->value;
     }
 
     public function list(?array $categoryFilter = null): array

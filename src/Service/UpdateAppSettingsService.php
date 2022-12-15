@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfAppSettings\Service;
 
-use OnixSystemsPHP\HyperfAppSettings\Constants\AppSettings;
-use OnixSystemsPHP\HyperfAppSettings\DTO\UpdateAppSettingDTO;
-use OnixSystemsPHP\HyperfActionsLog\Event\Action;
-use OnixSystemsPHP\HyperfCore\Exception\BusinessException;
-use OnixSystemsPHP\HyperfAppSettings\Model\AppSetting;
-use OnixSystemsPHP\HyperfAppSettings\Repository\AppSettingsRepository;
-use OnixSystemsPHP\HyperfCore\Service\Service;
+use Hyperf\Contract\ConfigInterface;
 use Hyperf\DbConnection\Annotation\Transactional;
 use Hyperf\Validation\Contract\ValidatorFactoryInterface;
+use OnixSystemsPHP\HyperfActionsLog\Event\Action;
+use OnixSystemsPHP\HyperfAppSettings\DTO\UpdateAppSettingDTO;
+use OnixSystemsPHP\HyperfAppSettings\Model\AppSetting;
+use OnixSystemsPHP\HyperfAppSettings\Repository\AppSettingsRepository;
+use OnixSystemsPHP\HyperfCore\Exception\BusinessException;
+use OnixSystemsPHP\HyperfCore\Service\Service;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 #[Service]
@@ -21,6 +21,7 @@ class UpdateAppSettingsService
 
     public function __construct(
         private ValidatorFactoryInterface $vf,
+        private ConfigInterface $config,
         private AppSettingsRepository $rAppSettings,
         private AppSettingsService $appSettingsService,
         private EventDispatcherInterface $eventDispatcher,
@@ -48,15 +49,17 @@ class UpdateAppSettingsService
 
     private function validate(UpdateAppSettingDTO $userData): array
     {
-        if (!isset(AppSettings::SETTINGS_DATA[$userData->name])) {
-            throw new BusinessException(422, __('exceptions.update_app_settings.wrong_type'));
+        $settingsList = $this->config->get('app_settings.fields');
+        $settingsTypes = $this->config->get('app_settings.types');
+        if (!array_key_exists($userData->name, $settingsList)) {
+            throw new BusinessException(422, __('exceptions.app_settings.update_wrong_type'));
         }
-        $type = AppSettings::SETTINGS_DATA[$userData->name]['type'];
-        $category = AppSettings::SETTINGS_DATA[$userData->name]['category'];
+        $type = $settingsList[$userData->name]['type'];
+        $category = $settingsList[$userData->name]['category'];
         $result = $this->vf
             ->make($userData->toArray(), array_merge([
-                'name' => 'in:' . implode(',', AppSettings::SETTINGS_LIST),
-            ], AppSettings::TYPES_VALIDATION[$type]))
+                'name' => 'in:' . implode(',', array_keys($settingsList)),
+            ], $settingsTypes[$type]))
             ->validate();
         $result['type'] = $type;
         $result['category'] = $category;

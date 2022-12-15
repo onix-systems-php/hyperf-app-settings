@@ -13,5 +13,5 @@ class UpdateAppSettingDTO extends AbstractDTO
 
     public string $name;
 
-    public $value;
+    public array $value;
 }
