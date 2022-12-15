@@ -20,8 +20,8 @@
     "require": {
         "php": ">=8.0",
         "ext-json": "*",
-        "onix-systems-php/hyperf-core": "^1.0",
-        "onix-systems-php/hyperf-actions-log": "^1.0",
+        "onix-systems-php/hyperf-core": "^1.0|dev-main",
+        "onix-systems-php/hyperf-actions-log": "^1.0|dev-main",
         "hyperf/database": "^2.2|^3.0",
         "hyperf/cache": "~2.2.0|^3.0",
         "nesbot/carbon": "^2.0|^3.0",
