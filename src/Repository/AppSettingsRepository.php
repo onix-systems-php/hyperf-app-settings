@@ -1,6 +1,6 @@
 <?php
-declare(strict_types=1);
 
+declare(strict_types=1);
 namespace OnixSystemsPHP\HyperfAppSettings\Repository;
 
 use Hyperf\Cache\Annotation\Cacheable;
@@ -31,14 +31,14 @@ class AppSettingsRepository extends AbstractRepository
             $settings[$setting->name] = $setting;
         }
         foreach ($settingsList as $name => $data) {
-            if (!isset($settings[$name])) {
+            if (! isset($settings[$name])) {
                 $settings[$name] = (new AppSetting())->fill($data);
             }
         }
         return $settings;
     }
 
-    //-----$paginationDTO
+    // -----$paginationDTO
 
     public function getByName(string $name, bool $lock = false, bool $force = false): ?AppSetting
     {
@@ -49,7 +49,7 @@ class AppSettingsRepository extends AbstractRepository
         return $this->query()->where('name', $name);
     }
 
-    //-----
+    // -----
 
     protected function fetchOne(Builder $builder, bool $lock, bool $force): ?AppSetting
     {
