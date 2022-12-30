@@ -27,12 +27,13 @@ class AppSettingsRepository extends AbstractRepository
         $config = ApplicationContext::getContainer()->get(ConfigInterface::class);
         $settingsList = $config->get('app_settings.fields');
         $settings = [];
+        /** @var AppSetting $setting */
         foreach (AppSetting::all()->all() as $setting) {
             $settings[$setting->name] = $setting;
         }
         foreach ($settingsList as $name => $data) {
             if (! isset($settings[$name])) {
-                $settings[$name] = (new AppSetting())->fill($data);
+                $settings[$name] = $this->create($data);
             }
         }
         return $settings;

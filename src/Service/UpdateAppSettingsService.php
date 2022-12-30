@@ -1,6 +1,6 @@
 <?php
-declare(strict_types=1);
 
+declare(strict_types=1);
 namespace OnixSystemsPHP\HyperfAppSettings\Service;
 
 use Hyperf\Contract\ConfigInterface;
@@ -10,6 +10,7 @@ use OnixSystemsPHP\HyperfActionsLog\Event\Action;
 use OnixSystemsPHP\HyperfAppSettings\DTO\UpdateAppSettingDTO;
 use OnixSystemsPHP\HyperfAppSettings\Model\AppSetting;
 use OnixSystemsPHP\HyperfAppSettings\Repository\AppSettingsRepository;
+use OnixSystemsPHP\HyperfCore\Contract\CorePolicyGuard;
 use OnixSystemsPHP\HyperfCore\Exception\BusinessException;
 use OnixSystemsPHP\HyperfCore\Service\Service;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -25,6 +26,7 @@ class UpdateAppSettingsService
         private AppSettingsRepository $rAppSettings,
         private AppSettingsService $appSettingsService,
         private EventDispatcherInterface $eventDispatcher,
+        private ?CorePolicyGuard $policyGuard = null,
     ) {
     }
 
@@ -33,10 +35,12 @@ class UpdateAppSettingsService
     {
         $params = $this->validate($updateAppSettingDTO);
         $setting = $this->rAppSettings->getByName($params['name'], true);
-        if (!empty($setting)) {
+        if (! empty($setting)) {
+            $this->policyGuard?->check('update', $setting, $params);
             $this->rAppSettings->update($setting, $params);
         } else {
             $setting = $this->rAppSettings->create($params);
+            $this->policyGuard?->check('create', $setting);
         }
         $this->rAppSettings->save($setting);
         $this->appSettingsService->reload();
@@ -51,7 +55,7 @@ class UpdateAppSettingsService
     {
         $settingsList = $this->config->get('app_settings.fields');
         $settingsTypes = $this->config->get('app_settings.types');
-        if (!array_key_exists($userData->name, $settingsList)) {
+        if (! array_key_exists($userData->name, $settingsList)) {
             throw new BusinessException(422, __('exceptions.app_settings.update_wrong_type'));
         }
         $type = $settingsList[$userData->name]['type'];
