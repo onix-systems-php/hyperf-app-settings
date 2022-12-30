@@ -26,7 +26,7 @@ class UpdateAppSettingsService
         private AppSettingsRepository $rAppSettings,
         private AppSettingsService $appSettingsService,
         private EventDispatcherInterface $eventDispatcher,
-        private ?CorePolicyGuard $policyGuard = null,
+        private ?CorePolicyGuard $policyGuard,
     ) {
     }
 

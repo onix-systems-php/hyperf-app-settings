@@ -19,7 +19,7 @@ class AppSettingsService
     public function __construct(
         private ConfigInterface $config,
         private AppSettingsRepository $rAppSettings,
-        private ?CorePolicyGuard $policyGuard = null,
+        private ?CorePolicyGuard $policyGuard,
     ) {
         $this->reload();
     }
