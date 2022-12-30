@@ -3,19 +3,10 @@
 declare(strict_types=1);
 namespace OnixSystemsPHP\HyperfAppSettings;
 
-use Hyperf\HttpServer\Router\Router;
-use Hyperf\Utils\ApplicationContext;
-
 class ConfigProvider
 {
     public function __invoke(): array
     {
-        if (ApplicationContext::hasContainer()) {
-            Router::addGroup('/v1/admin/action_logs', function () {
-                Router::get('', [Controller\ActionLogsController::class, 'index']);
-            });
-        }
-
         return [
             'dependencies' => [
             ],
