@@ -5,16 +5,18 @@ namespace OnixSystemsPHP\HyperfAppSettings\Repository;
 
 use Hyperf\Cache\Annotation\Cacheable;
 use Hyperf\Contract\ConfigInterface;
-use Hyperf\Database\Model\Builder;
 use Hyperf\Utils\ApplicationContext;
 use OnixSystemsPHP\HyperfAppSettings\Model\AppSetting;
 use OnixSystemsPHP\HyperfCore\Constants\Time;
+use OnixSystemsPHP\HyperfCore\Model\Builder;
 use OnixSystemsPHP\HyperfCore\Repository\AbstractRepository;
 
 /**
  * @method AppSetting create(array $data)
  * @method AppSetting update(AppSetting $model, array $data)
  * @method AppSetting save(AppSetting $model)
+ * @method AppSettingsRepository|Builder finder(string $type, ...$parameters)
+ * @method null|AppSetting fetchOne(bool $lock, bool $force)
  */
 class AppSettingsRepository extends AbstractRepository
 {
@@ -28,7 +30,7 @@ class AppSettingsRepository extends AbstractRepository
         $settingsList = $config->get('app_settings.fields');
         $settings = [];
         /** @var AppSetting $setting */
-        foreach (AppSetting::all()->all() as $setting) {
+        foreach ($this->query()->get()->all() as $setting) {
             $settings[$setting->name] = $setting;
         }
         foreach ($settingsList as $name => $data) {
@@ -39,23 +41,13 @@ class AppSettingsRepository extends AbstractRepository
         return $settings;
     }
 
-    // -----$paginationDTO
-
     public function getByName(string $name, bool $lock = false, bool $force = false): ?AppSetting
     {
-        return $this->fetchOne($this->queryByName($name), $lock, $force);
-    }
-    public function queryByName(string $name): Builder
-    {
-        return $this->query()->where('name', $name);
+        return $this->finder('name', $name)->fetchOne($lock, $force);
     }
 
-    // -----
-
-    protected function fetchOne(Builder $builder, bool $lock, bool $force): ?AppSetting
+    public function scopeName(Builder $query, string $name): void
     {
-        /** @var ?AppSetting $result */
-        $result = parent::fetchOne($builder, $lock, $force);
-        return $result;
+        $query->where('name', '=', $name);
     }
 }

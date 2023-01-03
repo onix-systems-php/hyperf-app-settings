@@ -24,7 +24,7 @@ class AppSettingsService
         $this->reload();
     }
 
-    #[CacheEvict(prefix: 'app:setting_list', ttl: Time::YEAR)]
+    #[CacheEvict(prefix: 'app:setting_list')]
     public function reload(): void
     {
         $this->appSettings = $this->rAppSettings->getSettingsList();

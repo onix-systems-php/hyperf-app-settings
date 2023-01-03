@@ -5,14 +5,16 @@ namespace OnixSystemsPHP\HyperfAppSettings\Resource;
 
 use OnixSystemsPHP\HyperfAppSettings\Model\AppSetting;
 use OnixSystemsPHP\HyperfCore\Resource\AbstractResource;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
+#[OA\Schema(
+    schema: 'ResourceAppSettings',
+    properties: [
+        new OA\Property(property: '<APP_SETTING_NAME>', ref: '#/components/schemas/ResourceAppSetting')
+    ],
+    type: 'object'
+)]
 /**
- * @OA\Schema(
- *     schema="ResourceAppSettings",
- *     type="object",
- *     @OA\Property(property="<APP_SETTING_NAME>", ref="#/components/schemas/ResourceAppSetting")
- * )
  * @method __construct(AppSetting[] $resource)
  * @property AppSetting[] $resource
  */

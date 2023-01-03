@@ -17,13 +17,13 @@ use OnixSystemsPHP\HyperfCore\Model\AbstractModel;
  */
 class AppSetting extends AbstractModel
 {
-    protected $table = 'app_settings';
+    protected ?string $table = 'app_settings';
 
-    protected $guarded = [];
+    protected array $guarded = [];
 
-    protected $hidden = ['id', 'created_at', 'updated_at'];
+    protected array $hidden = ['id', 'created_at', 'updated_at'];
 
-    protected $casts = [
+    protected array $casts = [
         'id' => 'integer',
         'type' => 'string',
         'category' => 'string',

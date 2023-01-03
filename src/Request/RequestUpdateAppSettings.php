@@ -4,16 +4,16 @@ declare(strict_types=1);
 namespace OnixSystemsPHP\HyperfAppSettings\Request;
 
 use Hyperf\Validation\Request\FormRequest;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Schema(
- *     schema="RequestUpdateAppSettings",
- *     type="object",
- *     @OA\Property(property="name", type="string", example="SETTING_EXAMPLE_STRING"),
- *     @OA\Property(property="value", type="object", example="<TYPE_RELATED_VALUE>"),
- * )
- */
+#[OA\Schema(
+    schema: 'RequestUpdateAppSettings',
+    properties: [
+        new OA\Property(property: 'name', type: 'string', example: 'SETTING_EXAMPLE_STRING'),
+        new OA\Property(property: 'value', type: 'object', example: '<TYPE_RELATED_VALUE>'),
+    ],
+    type: 'object',
+)]
 class RequestUpdateAppSettings extends FormRequest
 {
     /**
