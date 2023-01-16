@@ -9,7 +9,7 @@ use OpenApi\Attributes as OA;
 #[OA\Schema(
     schema: 'RequestGetAppSettings',
     properties: [
-        new OA\Property(property: 'categories', type: 'array', items: [new OA\Items(type: 'string')]),
+        new OA\Property(property: 'categories', type: 'array', items: new OA\Items(type: 'string')),
     ],
     type: 'object',
 )]
