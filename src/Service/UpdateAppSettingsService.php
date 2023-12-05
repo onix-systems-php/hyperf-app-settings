@@ -1,6 +1,15 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
+
 namespace OnixSystemsPHP\HyperfAppSettings\Service;
 
 use Hyperf\Contract\ConfigInterface;
@@ -27,8 +36,7 @@ class UpdateAppSettingsService
         private AppSettingsService $appSettingsService,
         private EventDispatcherInterface $eventDispatcher,
         private ?CorePolicyGuard $policyGuard,
-    ) {
-    }
+    ) {}
 
     #[Transactional(attempts: 1)]
     public function run(UpdateAppSettingDTO $updateAppSettingDTO): ?AppSetting

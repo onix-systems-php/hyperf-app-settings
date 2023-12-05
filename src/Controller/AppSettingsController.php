@@ -1,6 +1,15 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
+
 namespace OnixSystemsPHP\HyperfAppSettings\Controller;
 
 use OnixSystemsPHP\HyperfAppSettings\DTO\UpdateAppSettingDTO;
@@ -15,7 +24,6 @@ use OpenApi\Attributes as OA;
 
 class AppSettingsController extends AbstractController
 {
-
     #[OA\Get(
         path: '/v1/admin/app_settings',
         operationId: 'appSettingsListing',
@@ -25,24 +33,23 @@ class AppSettingsController extends AbstractController
         parameters: [new OA\Parameter(
             name: 'categories[]',
             in: 'query',
-            explode: true,
+            schema: new OA\Schema(type: 'array', items: new OA\Items(type: 'string')),
             example: 'user',
-            schema: new OA\Schema(type: 'array', items: new OA\Items(type: 'string'))
+            explode: true
         )],
         responses: [
             new OA\Response(response: 200, description: '', content: new OA\JsonContent(properties: [
                 new OA\Property(property: 'status', type: 'string'),
                 new OA\Property(property: 'data', ref: '#/components/schemas/ResourceAppSettings'),
             ])),
-            new OA\Response(response: 401, ref: '#/components/responses/401'),
-            new OA\Response(response: 500, ref: '#/components/responses/500'),
+            new OA\Response(ref: '#/components/responses/401', response: 401),
+            new OA\Response(ref: '#/components/responses/500', response: 500),
         ],
     )]
     public function index(AppSettingsService $appSettingsService, RequestGetAppSettings $request): ResourceAppSettings
     {
         return ResourceAppSettings::make($appSettingsService->list($request->query('categories')));
     }
-
 
     #[OA\Post(
         path: '/v1/admin/app_settings',
@@ -57,8 +64,8 @@ class AppSettingsController extends AbstractController
                 new OA\Property(property: 'status', type: 'string'),
                 new OA\Property(property: 'data', ref: '#/components/schemas/ResourceAppSetting'),
             ])),
-            new OA\Response(response: 401, ref: '#/components/responses/401'),
-            new OA\Response(response: 500, ref: '#/components/responses/500'),
+            new OA\Response(ref: '#/components/responses/401', response: 401),
+            new OA\Response(ref: '#/components/responses/500', response: 500),
         ]
     )]
     public function update(
