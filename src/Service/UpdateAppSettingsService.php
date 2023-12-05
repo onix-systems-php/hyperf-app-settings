@@ -21,6 +21,8 @@ use OnixSystemsPHP\HyperfCore\Exception\BusinessException;
 use OnixSystemsPHP\HyperfCore\Service\Service;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
+use function Hyperf\Translation\__;
+
 #[Service]
 class UpdateAppSettingsService
 {

@@ -16,6 +16,8 @@ use OnixSystemsPHP\HyperfCore\Contract\CorePolicyGuard;
 use OnixSystemsPHP\HyperfCore\Exception\BusinessException;
 use OnixSystemsPHP\HyperfCore\Service\Service;
 
+use function Hyperf\Translation\__;
+
 #[Service]
 class AppSettingsService
 {
