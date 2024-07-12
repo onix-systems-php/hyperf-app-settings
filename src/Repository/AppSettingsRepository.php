@@ -16,6 +16,8 @@ use OnixSystemsPHP\HyperfAppSettings\Model\AppSetting;
 use OnixSystemsPHP\HyperfCore\Constants\Time;
 use OnixSystemsPHP\HyperfCore\Model\Builder;
 use OnixSystemsPHP\HyperfCore\Repository\AbstractRepository;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * @method AppSetting create(array $data)
@@ -28,22 +30,27 @@ class AppSettingsRepository extends AbstractRepository
 {
     protected string $modelClass = AppSetting::class;
 
+    /**
+     * @return array<string, AppSetting>
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Cacheable(prefix: 'app:setting_list', ttl: Time::YEAR)]
     public function getSettingsList(): array
     {
         /** @var ConfigInterface $config */
         $config = ApplicationContext::getContainer()->get(ConfigInterface::class);
         $settingsList = $config->get('app_settings.fields');
-        $settings = [];
-        /** @var AppSetting $setting */
-        foreach ($this->query()->get()->all() as $setting) {
-            $settings[$setting->name] = $setting;
-        }
+
+        /** @var array<string, AppSetting> $settings */
+        $settings = $this->query()->get()->keyBy('name')->all();
+
         foreach ($settingsList as $name => $data) {
             if (! isset($settings[$name])) {
                 $settings[$name] = $this->create($data);
             }
         }
+
         return $settings;
     }
 
